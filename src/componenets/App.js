@@ -2,6 +2,7 @@ import React from "react";
 import {data} from '../data';
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
+import { addMovies } from "../actions";
 
 
 class App extends React.Component  {
@@ -10,17 +11,14 @@ class App extends React.Component  {
     //dispatch action
     const {store} =this.props;
     store.subscribe(() => {
-      console.log('UPDATED');
+      // console.log(listner);
       this.forceUpdate();
     })
-    store.dispatch({
-      type: 'ADD_MOVIES',
-      movies: data
-    });
-     console.log('state',this.props.store.getState());
+    store.dispatch(addMovies(data));
+    //  console.log('state',this.props.store.getState());
   }
   render(){
-  const movies= this.props.store.getState();
+  const {list}= this.props.store.getState();
   return (
     <div className="App">
     <Navbar />
@@ -30,7 +28,7 @@ class App extends React.Component  {
         <div className="tab">Favourites</div>
       </div>
       <div className="list">
-         {movies.map((movie,index) =>(
+         {list.map((movie,index) =>(
           <MovieCard movie={movie} key={index} />
          ))}
       </div>
